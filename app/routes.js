@@ -16,6 +16,9 @@ const makerController = require('./controllers/MakerController');
 const appRoutes = express.Router();
 
 appRoutes
+  .get('/', (req, res) => {
+    res.status(200).send('Bem vindo ao Make Up Your Mind!');
+  })
   .use(cookieParser(authConfig.secret))
   .post('/login', authController.authenticate)
   .post('/register', userController.create)
