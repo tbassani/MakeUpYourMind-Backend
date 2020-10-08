@@ -15,6 +15,8 @@ class SkinOiliness extends Model {
         sequelize,
         schema: 'make_up_your_mind',
         tableName: 'skin_oiliness',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
       }
     );
   }

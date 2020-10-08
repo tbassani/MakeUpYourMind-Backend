@@ -15,6 +15,8 @@ class RatingHistory extends Model {
         sequelize,
         schema: 'make_up_your_mind',
         tableName: 'rating_history',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
       }
     );
   }

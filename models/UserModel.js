@@ -29,6 +29,8 @@ class Users extends Model {
         sequelize,
         schema: 'make_up_your_mind',
         tableName: 'users',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
       }
     );
   }
