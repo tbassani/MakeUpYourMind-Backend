@@ -7,6 +7,7 @@ const http = require('http');
 const querystring = require('querystring');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
+require('dotenv').config();
 
 const products = require('../../models/ProductModel');
 const users = require('../../models/UserModel');
