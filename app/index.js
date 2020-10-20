@@ -10,7 +10,8 @@ require('../database');
 require('dotenv').config();
 
 const corsOptions = {
-  origin: APP_CONFIG.APP_URL,
+  origin: process.env.APP_URL,
+  optionsSuccessStatus: 200,
   credentials: true,
   exposedHeaders: ['X-Token', 'X-Total-Count', 'X-Per-Page,Access-Control-Allow-Credentials'],
 };
