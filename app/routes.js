@@ -24,11 +24,9 @@ appRoutes
   .post('/register', userController.create)
   .get('/check_token', authController.checkToken)
   .get('/profiles', profileController.getProfiles)
-
   //.get('/insert_all_makers', productController.insertAllMakers)
   //.get('/insert_all_categories', productController.insertAllCategories)
   //Products
-
   .get('/products', productController.getAll)
   .get('/products_maker/:maker', productController.getByMaker)
   .get('/products_category/:category', productController.getByCategory)
