@@ -313,27 +313,29 @@ module.exports = {
       const user_profile = await users.findByPk(req.user_id, {
         include: { association: 'user_profile' },
       });
-      const profile = user_profile.dataValues.user_profile.dataValues;
-
       const { maker, category, page, name } = req.query;
       const offset = (page - 1) * 10;
+      var where_clause = '';
+      if (user_profile) {
+        const profile = user_profile.dataValues;
 
-      var where_clause =
-        ` AND "ratings"."skin_color_id" = ${profile.skin_color_id} ` +
-        `AND "ratings"."skin_acne_id" = ${profile.skin_acne_id} ` +
-        `AND "ratings"."skin_lines_id" = ${profile.skin_lines_id} ` +
-        `AND "ratings"."skin_oiliness_id" = ${profile.skin_oiliness_id} `;
-      if (maker && category) {
         where_clause =
-          `WHERE "Products"."maker" = '${maker}' ` + `AND "Products"."category" = '${category}'`;
-      } else if (maker) {
-        where_clause = `WHERE "Products"."maker" = '${maker}' `;
-      } else if (category) {
-        where_clause = `WHERE "Products"."category" = '${category}' `;
+          ` AND "ratings"."skin_color_id" = ${profile.skin_color_id} ` +
+          `AND "ratings"."skin_acne_id" = ${profile.skin_acne_id} ` +
+          `AND "ratings"."skin_lines_id" = ${profile.skin_lines_id} ` +
+          `AND "ratings"."skin_oiliness_id" = ${profile.skin_oiliness_id} `;
+        if (maker && category) {
+          where_clause =
+            `WHERE "Products"."maker" = '${maker}' ` + `AND "Products"."category" = '${category}'`;
+        } else if (maker) {
+          where_clause = `WHERE "Products"."maker" = '${maker}' `;
+        } else if (category) {
+          where_clause = `WHERE "Products"."category" = '${category}' `;
+        }
       }
-
       if (!name) {
         console.log('GET ALL PRODUCTS AND RATINGS');
+        console.log(where_clause);
         list = await conn.query(
           `SELECT 
         "Products"."id", 
@@ -353,14 +355,16 @@ module.exports = {
           { type: Sequelize.QueryTypes.SELECT }
         );
       } else {
-        var query = `'%${name.toUpperCase()}%'`;
-        where_clause =
-          ` AND "ratings"."skin_color_id" = ${profile.skin_color_id} ` +
-          `AND "ratings"."skin_acne_id" = ${profile.skin_acne_id} ` +
-          `AND "ratings"."skin_lines_id" = ${profile.skin_lines_id} ` +
-          `AND "ratings"."skin_oiliness_id" = ${profile.skin_oiliness_id} ` +
-          `WHERE UPPER("Products"."name") LIKE ${query} `;
-
+        if (user_profile) {
+          const profile = user_profile.dataValues;
+          var query = `'%${name.toUpperCase()}%'`;
+          where_clause =
+            ` AND "ratings"."skin_color_id" = ${profile.skin_color_id} ` +
+            `AND "ratings"."skin_acne_id" = ${profile.skin_acne_id} ` +
+            `AND "ratings"."skin_lines_id" = ${profile.skin_lines_id} ` +
+            `AND "ratings"."skin_oiliness_id" = ${profile.skin_oiliness_id} ` +
+            `WHERE UPPER("Products"."name") LIKE ${query} `;
+        }
         list = await conn.query(
           `SELECT 
         "Products"."id", 

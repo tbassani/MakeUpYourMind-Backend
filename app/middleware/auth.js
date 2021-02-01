@@ -10,7 +10,7 @@ function generateToken(params = {}) {
 }
 
 module.exports = (req, res, next) => {
-  // console.log('MIDDLEWARE BEGIN ----------------------------------------------------------------');
+  console.log('MIDDLEWARE BEGIN ----------------------------------------------------------------');
 
   const authHeader = req.headers.authorization;
 
@@ -35,24 +35,24 @@ module.exports = (req, res, next) => {
     if (err) {
       console.log('Invalid Refresh token');
       return res.status(401).send({ error: 'Invalid refresh Token' });
+    } else {
+      jwt.verify(token, authConfig.secret, (err, decoded) => {
+        if (err) {
+          console.log('Token not OK');
+          if (req.user_id) {
+            console.log('Refresh Token OK');
+            res.header('X-Token', generateToken({ id: req.user_id }));
+            return res.status(200).send();
+          }
+          console.log('Refresh Token not OK');
+          return res.status(401).send({ error: 'Invalid token' });
+        }
+        console.log('JWT OK');
+
+        return next();
+      });
     }
     console.log(decoded);
     req.user_id = decoded.id;
-  });
-
-  jwt.verify(token, authConfig.secret, (err, decoded) => {
-    if (err) {
-      console.log('Token not OK');
-      if (req.user_id) {
-        console.log('Refresh Token OK');
-        res.header('X-Token', generateToken({ id: req.user_id }));
-        return res.status(200).send();
-      }
-      console.log('Refresh Token not OK');
-      return res.status(401).send({ error: 'Invalid token' });
-    }
-    console.log('JWT OK');
-
-    return next();
   });
 };
