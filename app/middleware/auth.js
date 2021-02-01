@@ -34,7 +34,22 @@ module.exports = (req, res, next) => {
   jwt.verify(refreshCookie, authConfig.refresh_secret, (err, decoded) => {
     if (err) {
       console.log('Invalid Refresh token');
-      return res.status(401).send({ error: 'Invalid refresh Token' });
+      //return res.status(401).send({ error: 'Invalid refresh Token' });
+      jwt.verify(token, authConfig.secret, (err, decoded) => {
+        if (err) {
+          console.log('Token not OK');
+          if (req.user_id) {
+            console.log('Refresh Token OK');
+            res.header('X-Token', generateToken({ id: req.user_id }));
+            return res.status(200).send();
+          }
+          console.log('Refresh Token not OK');
+          return res.status(401).send({ error: 'Invalid token' });
+        }
+        console.log('JWT OK');
+
+        return next();
+      });
     } else {
       jwt.verify(token, authConfig.secret, (err, decoded) => {
         if (err) {
