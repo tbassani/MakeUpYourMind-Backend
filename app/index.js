@@ -11,6 +11,7 @@ require('dotenv').config();
 
 const corsOptions = {
   //origin: process.env.APP_URL,
+  origin: 'http://localhost:3000',
   optionsSuccessStatus: 200,
   credentials: true,
   exposedHeaders: ['X-Token', 'X-Total-Count', 'X-Per-Page,Access-Control-Allow-Credentials'],
