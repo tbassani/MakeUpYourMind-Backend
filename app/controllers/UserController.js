@@ -45,7 +45,7 @@ module.exports = {
       const check_user = find_user[0];
 
       if (check_user && check_user !== undefined && find_user.length > 0) {
-        return res.status(400).send({ error: 'User already registered' });
+        return res.status(400).send({ error: 'E-mail já cadastrado!' });
       }
 
       const hash = bcrypt.hashSync(password, 10);

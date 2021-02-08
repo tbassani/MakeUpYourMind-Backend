@@ -47,7 +47,7 @@ module.exports = (req, res, next) => {
           return res.status(401).send({ error: 'Invalid token' });
         }
         console.log('JWT OK');
-
+        req.user_id = decoded.id;
         return next();
       });
     } else {
@@ -63,11 +63,9 @@ module.exports = (req, res, next) => {
           return res.status(401).send({ error: 'Invalid token' });
         }
         console.log('JWT OK');
-
+        req.user_id = decoded.id;
         return next();
       });
     }
-    console.log(decoded);
-    req.user_id = decoded.id;
   });
 };

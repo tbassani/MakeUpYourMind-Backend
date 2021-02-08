@@ -36,7 +36,7 @@ module.exports = {
 
       if (!(await bcrypt.compare(password, login_user.password))) {
         console.log('400-----------------------------------');
-        return res.status(400).send({ error: 'Invalid password' });
+        return res.status(400).send({ error: 'Senha incorreta' });
       }
       console.log(req.cookies.jid);
       if (!req.cookies.jid) {
