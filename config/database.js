@@ -6,7 +6,6 @@ module.exports = {
   password: process.env.PASSWORD,
   host: process.env.HOST,
   dialect: process.env.DIALECT,
-  port: process.env.PORT,
   dialectOptions: {
     ssl: {
       rejectUnauthorized: false,
