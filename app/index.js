@@ -13,12 +13,14 @@ const corsOptions = {
   origin: process.env.APP_URL,
   optionsSuccessStatus: 200,
   credentials: true,
-  exposedHeaders: ['X-Token', 'X-Total-Count', 'X-Per-Page,Access-Control-Allow-Credentials'],
+  exposedHeaders: ['X-Token', 'X-Total-Count', 'X-Per-Page', 'Access-Control-Allow-Credentials'],
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(routes);
+
+app.enable('trust proxy');
 
 app.use((req, res, next) => {
   const error = new Error('Not Found');
