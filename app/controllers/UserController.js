@@ -66,6 +66,12 @@ module.exports = {
 
       const newRefreshToken = generateRefreshToken({ id: user.id });
 
+      res.header('X-Token', token);
+      res.header(`Access-Control-Allow-Origin: ${process.env.APP_URL}`);
+      res.header('Access-Control-Allow-Credentials: true');
+      res.header('Access-Control-Allow-Methods: GET, POST');
+      res.header('Access-Control-Allow-Headers: Content-Type, *');
+
       res.cookie('jid', newRefreshToken, {
         sign: true,
         expires: new Date(Date.now() + authConfig.refresh_cookie_exp),
@@ -75,7 +81,6 @@ module.exports = {
       });
 
       const token = generateToken({ id: user.id });
-      res.header('X-Token', token);
 
       return res.json(user);
     } catch (error) {
