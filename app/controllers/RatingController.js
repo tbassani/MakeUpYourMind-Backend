@@ -90,7 +90,6 @@ module.exports = {
       console.log('CREATE EVALUATION');
       const { product_id } = req.params;
       const { user_rating } = req.body;
-      console.log(req.body);
       const user_profile = await users.findByPk(req.user_id, {
         include: { association: 'user_profile' },
       });
@@ -105,7 +104,7 @@ module.exports = {
           user_id: profile.user_id,
           product_id: profile.product_id,
         };
-        console.log(req.body);
+        console.log(product_id);
 
         const new_rating = await product_rating.create({
           rating: user_rating,

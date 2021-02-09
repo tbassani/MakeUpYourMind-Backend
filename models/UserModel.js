@@ -8,6 +8,14 @@ class Users extends Model {
           allowNull: false,
           unique: true,
         },
+        first_name: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        last_name: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
         password: {
           type: DataTypes.STRING,
           allowNull: false,
@@ -27,7 +35,6 @@ class Users extends Model {
       },
       {
         sequelize,
-        schema: 'make_up_your_mind',
         tableName: 'users',
         createdAt: 'created_at',
         updatedAt: 'updated_at',

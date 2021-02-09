@@ -25,8 +25,9 @@ appRoutes
   .get('/check_token', authController.checkToken)
   .get('/profiles', profileController.getProfiles)
 
-  //.get('/insert_all_makers', productController.insertAllMakers)
-  //.get('/insert_all_categories', productController.insertAllCategories)
+  // .get('/insert_all_makers', productController.insertAllMakers)
+  // .get('/insert_all_categories', productController.insertAllCategories)
+  // .get('/insert_all_products', productController.insertAll)
   //Products
 
   .get('/products', productController.getAll)

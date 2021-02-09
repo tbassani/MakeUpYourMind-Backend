@@ -15,8 +15,8 @@ const makers = require('../../models/MakersModel');
 const categories = require('../../models/CategoriesModel');
 const rating = require('../../models/ProductRatingModel');
 const apiConfig = require('../../config/APIs');
-//const dbConfig = require('../../config/database');
-const conn = new Sequelize(process.env.DB_URL);
+const dbConfig = require('../../config/database');
+const conn = new Sequelize(dbConfig);
 
 module.exports = {
   async insertAll(req, res, next) {
@@ -312,29 +312,38 @@ module.exports = {
     try {
       const user_profile = await users.findByPk(req.user_id, {
         include: { association: 'user_profile' },
+        raw: true,
       });
       const { maker, category, page, name } = req.query;
       const offset = (page - 1) * 10;
       var where_clause = '';
+      var join_clause = '';
       if (user_profile) {
-        const profile = await user_profile.dataValues;
-        where_clause =
-          ` AND "ratings"."skin_color_id" = ${profile.user_profile.dataValues.skin_color_id} ` +
-          `AND "ratings"."skin_acne_id" = ${profile.user_profile.dataValues.skin_acne_id} ` +
-          `AND "ratings"."skin_lines_id" = ${profile.user_profile.dataValues.skin_lines_id} ` +
-          `AND "ratings"."skin_oiliness_id" = ${profile.user_profile.dataValues.skin_oiliness_id} `;
+        console.log('USER PROFILE');
+        console.log(user_profile);
+        const profile = user_profile;
+
+        join_clause =
+          ` AND "ratings"."skin_color_id" = ${profile['user_profile.skin_color_id']} ` +
+          `AND "ratings"."skin_acne_id" = ${profile['user_profile.skin_acne_id']} ` +
+          `AND "ratings"."skin_lines_id" = ${profile['user_profile.skin_lines_id']} ` +
+          `AND "ratings"."skin_oiliness_id" = ${profile['user_profile.skin_oiliness_id']} `;
+        console.log('WHERE CLAUSE--------------------------------------------');
+        console.log(join_clause);
         if (maker && category) {
           where_clause =
-            `WHERE "Products"."maker" = '${maker}' ` + `AND "Products"."category" = '${category}'`;
+            `WHERE "Products"."maker" = '${maker}' ` +
+            `AND "Products"."category" = '${category}' ` +
+            where_clause;
         } else if (maker) {
-          where_clause = `WHERE "Products"."maker" = '${maker}' `;
+          where_clause = `WHERE "Products"."maker" =  ${maker}' `;
         } else if (category) {
           where_clause = `WHERE "Products"."category" = '${category}' `;
         }
       }
       if (!name) {
         console.log('GET ALL PRODUCTS AND RATINGS');
-
+        console.log(where_clause);
         list = await conn.query(
           `SELECT 
         "Products"."id", 
@@ -347,8 +356,8 @@ module.exports = {
         "Products"."external_id", 
         SUM("ratings"."rating") AS "totalRating", 
         COUNT("ratings"."rating") AS "ratingAmount" 
-        FROM "make_up_your_mind"."products" AS "Products"
-        LEFT OUTER JOIN "make_up_your_mind"."product_ratings" AS "ratings" 
+        FROM "products" AS "Products"
+        LEFT OUTER JOIN "product_ratings" AS "ratings" 
         ON "Products"."id" = "ratings"."product_id" ${where_clause} 
         GROUP BY "id" LIMIT 10 OFFSET ${offset};`,
           { type: Sequelize.QueryTypes.SELECT }
@@ -357,12 +366,11 @@ module.exports = {
         if (user_profile) {
           const profile = user_profile.dataValues;
           var query = `'%${name.toUpperCase()}%'`;
-          where_clause =
-            ` AND "ratings"."skin_color_id" = ${profile.user_profile.dataValues.skin_color_id} ` +
-            `AND "ratings"."skin_acne_id" = ${profile.user_profile.dataValues.skin_acne_id} ` +
-            `AND "ratings"."skin_lines_id" = ${profile.user_profile.dataValues.skin_lines_id} ` +
-            `AND "ratings"."skin_oiliness_id" = ${profile.user_profile.dataValues.skin_oiliness_id} ` +
-            `WHERE UPPER("Products"."name") LIKE ${query} `;
+          if (where_clause.length === 0) {
+            where_clause = ` WHERE UPPER("Products"."name") LIKE ${query} `;
+          } else {
+            where_clause = where_clause + ` AND UPPER("Products"."name") LIKE ${query} `;
+          }
         }
         list = await conn.query(
           `SELECT 
@@ -376,14 +384,14 @@ module.exports = {
         "Products"."external_id", 
         SUM("ratings"."rating") AS "totalRating", 
         COUNT("ratings"."rating") AS "ratingAmount" 
-        FROM "make_up_your_mind"."products" AS "Products"
-        LEFT OUTER JOIN "make_up_your_mind"."product_ratings" AS "ratings" 
-        ON "Products"."id" = "ratings"."product_id" ${where_clause} 
+        FROM "products" AS "Products"
+        LEFT OUTER JOIN "product_ratings" AS "ratings" 
+        ON "Products"."id" = "ratings"."product_id" ${join_clause} ${where_clause} 
         GROUP BY "id" LIMIT 10 OFFSET ${offset};`,
           { type: Sequelize.QueryTypes.SELECT }
         );
       }
-
+      console.log(list);
       res.header('Access-Control-Allow-Origin', process.env.APP_URL);
       res.header('X-Per-Page', 10);
       return res.status(200).json(list);

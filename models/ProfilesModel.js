@@ -22,7 +22,6 @@ class Profiles extends Model {
       },
       {
         sequelize,
-        schema: 'make_up_your_mind',
         tableName: 'profiles',
         createdAt: 'created_at',
         updatedAt: 'updated_at',

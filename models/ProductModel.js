@@ -42,7 +42,7 @@ class Products extends Model {
       },
       {
         sequelize,
-        schema: 'make_up_your_mind',
+        freezeTableName: true,
         tableName: 'products',
         createdAt: 'created_at',
         updatedAt: 'updated_at',

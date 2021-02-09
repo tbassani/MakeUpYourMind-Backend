@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert({ schema: 'make_up_your_mind', tableName: 'skin_lines' }, [
+    return queryInterface.bulkInsert({ tableName: 'skin_lines' }, [
       {
         description: 'Nenhuma',
         created_at: new Date(),
@@ -27,10 +27,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete(
-      { schema: 'make_up_your_mind', tableName: 'skin_lines' },
-      null,
-      {}
-    );
+    return queryInterface.bulkDelete({ tableName: 'skin_lines' }, null, {});
   },
 };

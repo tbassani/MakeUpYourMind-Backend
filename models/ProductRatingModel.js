@@ -38,7 +38,6 @@ class ProductRatings extends Model {
       },
       {
         sequelize,
-        schema: 'make_up_your_mind',
         tableName: 'product_ratings',
         createdAt: 'created_at',
         updatedAt: 'updated_at',

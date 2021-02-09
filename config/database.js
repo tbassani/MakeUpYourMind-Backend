@@ -7,10 +7,14 @@ module.exports = {
   host: process.env.HOST,
   dialect: process.env.DIALECT,
   port: process.env.PORT,
+  dialectOptions: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
   define: {
     freezeTableName: true,
     timestamps: true,
     underscored: true,
   },
-  schema: process.env.SCHEMA,
 };

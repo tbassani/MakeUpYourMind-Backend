@@ -49,11 +49,11 @@ module.exports = {
       }
 
       const hash = bcrypt.hashSync(password, 10);
-
+      console.log(first_name);
       const user = await User.create({
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
+        first_name,
+        last_name,
+        email,
         password: hash,
       });
       const profile = await Profile.create({
