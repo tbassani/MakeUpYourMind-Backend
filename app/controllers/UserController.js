@@ -70,7 +70,8 @@ module.exports = {
         sign: true,
         expires: new Date(Date.now() + authConfig.refresh_cookie_exp),
         httpOnly: true,
-        proxy: true,
+        saveUninitialized: false,
+        resave: false,
       });
 
       const token = generateToken({ id: user.id });
