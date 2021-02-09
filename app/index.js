@@ -27,10 +27,6 @@ app.use(
     store: 'teste', // store works fine, sessions are stored
     key: 'sid',
     proxy: true, // add this when behind a reverse proxy, if you need secure cookies
-    cookie: {
-      secure: true,
-      maxAge: 5184000000, // 2 months
-    },
   })
 );
 
