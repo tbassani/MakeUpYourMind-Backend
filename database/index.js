@@ -13,7 +13,7 @@ const ratingHistory = require('../models/RatingHistoryModel');
 const makers = require('../models/MakersModel');
 const categories = require('../models/CategoriesModel');
 
-const conn = new sequelize(dbConfig);
+const conn = new sequelize(process.env.DB_URL);
 
 users.init(conn);
 products.init(conn);

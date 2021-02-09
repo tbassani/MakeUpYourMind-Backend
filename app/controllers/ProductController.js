@@ -16,7 +16,7 @@ const categories = require('../../models/CategoriesModel');
 const rating = require('../../models/ProductRatingModel');
 const apiConfig = require('../../config/APIs');
 const dbConfig = require('../../config/database');
-const conn = new Sequelize(dbConfig);
+const conn = new Sequelize(process.env.DB_URL);
 
 module.exports = {
   async insertAll(req, res, next) {
