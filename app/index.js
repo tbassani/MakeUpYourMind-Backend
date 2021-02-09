@@ -20,16 +20,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(routes);
 
-app.enable('trust proxy');
-app.use(
-  express.session({
-    secret: 'somesecret',
-    store: 'teste', // store works fine, sessions are stored
-    key: 'sid',
-    proxy: true, // add this when behind a reverse proxy, if you need secure cookies
-  })
-);
-
 app.use((req, res, next) => {
   const error = new Error('Not Found');
   error.status = 404;

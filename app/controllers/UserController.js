@@ -78,6 +78,7 @@ module.exports = {
         httpOnly: true,
         saveUninitialized: false,
         resave: false,
+        domain: process.env.APP_URL,
       });
 
       const token = generateToken({ id: user.id });
