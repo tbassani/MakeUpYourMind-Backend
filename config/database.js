@@ -12,6 +12,7 @@ module.exports = {
       rejectUnauthorized: false,
     },
   },
+  ssl: true,
   define: {
     freezeTableName: true,
     timestamps: true,
