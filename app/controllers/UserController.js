@@ -66,6 +66,8 @@ module.exports = {
 
       const newRefreshToken = generateRefreshToken({ id: user.id });
 
+      const token = generateToken({ id: user.id });
+
       res.header('X-Token', token);
       res.header(`Access-Control-Allow-Origin: ${process.env.APP_URL}`);
       res.header('Access-Control-Allow-Credentials: true');
@@ -80,8 +82,6 @@ module.exports = {
         resave: false,
         domain: process.env.APP_URL,
       });
-
-      const token = generateToken({ id: user.id });
 
       return res.json(user);
     } catch (error) {
